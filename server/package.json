@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "nodemon --exec babel-node ./src/bin/www",
     "serve": "babel-node ./src/bin/www",
-    "build": "babel src -d dist",
-    "start": "pm2 start ./dist/bin/www.js"
+    "build": "babel src -d build",
+    "start": "pm2 start ./build/bin/www.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.16.3",
