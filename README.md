@@ -35,14 +35,14 @@ Ali Cloud Server: Centos + Nginx + PM2
 
 ## Features
 
-1. JWT and router guard - [x]
-2. Support http and https -[x]
-3. Travel application - [x]
-4. Travel approval - [x]
-5. Attendance based on real-time location - [x]
-6. Attendance Inquiry - [x]
-7. Personnel management -[x]
-8. Modify avatar and infos - []
+- [x] JWT and router guard
+- [x] Support http and https
+- [x] Travel application
+- [x] Travel approval
+- [x] Attendance based on real-time location
+- [x] Attendance Inquiry
+- [x] Personnel management
+- [ ] Modify avatar and infos
 
 ## Todo
 
