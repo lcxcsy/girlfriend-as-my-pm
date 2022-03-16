@@ -1,3 +1,26 @@
-div{
+div {
   box-sizing: border-box;
 }
+
+.van-cell {
+  background-color: transparent;
+}
+
+.van-card {
+  text-align: left;
+  border-radius: 6px;
+}
+
+.van-card__desc {
+  color: #323233;
+}
+
+.van-tabbar {
+  height: 64px;
+}
+
+.van-tabbar-item {
+  font-weight: bolder;
+}
+
+$main-bg-color: #f7f8fa;

@@ -1,15 +1,10 @@
-/*
- * @Author: your name
- * @Date: 2021-09-09 11:25:06
- * @LastEditTime: 2021-09-09 14:37:49
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \widget-vue2\src\router\index.js
- */
 import Vue from 'vue'
+import { Dialog } from 'vant'
 import Router from 'vue-router'
-
-import routerConfig from '@/router.config.js'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+import { TOKEN_NAME } from '@/config/constant'
+import routerConfig from '@/config/router.config.js'
 
 Vue.use(Router)
 
@@ -27,8 +22,32 @@ const processRouteObj = ({ component, children, ...args }) => {
   }, args)
 }
 
-export default new Router({
-  mode: 'hash',
+const router = new Router({
+  mode: 'history',
   base: process.env.BASE_URL,
   routes: createRoute(routerConfig)
 })
+
+router.beforeEach(async (to, from, next) => {
+  NProgress.start()
+  if (to.meta.requireAuth) {
+    const token = window.localStorage.getItem(TOKEN_NAME)
+    if (token) {
+      next()
+    } else {
+      Dialog.alert({
+        message: '暂未登录，即将跳转至登录页面...',
+      }).then(() => {
+        window.location.replace('/great-life/login')
+      });
+    }
+  } else {
+    next()
+  }
+})
+
+router.afterEach(() => {
+  NProgress.done() // 完成进度条
+})
+
+export default router

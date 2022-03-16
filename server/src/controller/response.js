@@ -1,10 +1,10 @@
 /*
  * @Author: 刘晨曦
  * @Date: 2021-09-07 16:12:33
- * @LastEditTime: 2021-09-08 13:53:29
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-08 09:52:33
+ * @LastEditors: your name
  * @Description: 相应的类
- * @FilePath: \express-collection\src\controller\response.js
+ * @FilePath: \server\src\controller\response.js
  */
 export default class Response {
   /**
@@ -15,7 +15,7 @@ export default class Response {
    * @param {*} pageSize
    * @return {*}
    */
-  createListResponse (list, total, pageNo, pageSize) {
+  createListResponse(list, total, pageNo, pageSize) {
     return {
       code: '0',
       msg: 'SUCCESS',
@@ -28,7 +28,7 @@ export default class Response {
    * @param {*} data
    * @return {*}
    */
-  createSuccessResponse (data) {
+  createSuccessResponse(data) {
     return {
       code: '0',
       msg: 'SUCCESS',
@@ -43,7 +43,7 @@ export default class Response {
    * @param {*} data 相应数据
    * @return {*}
    */
-  createCustomResponse (code, msg, data = null) {
+  createCustomResponse(code, msg, data = null) {
     return { code, msg, data }
   }
 }

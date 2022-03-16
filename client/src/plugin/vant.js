@@ -1,10 +1,11 @@
 import Vue from 'vue'
-import { Form, Field, Button, Popup, Picker, Calendar, Tabbar, TabbarItem, Card, Sticky, Tag, Popover } from 'vant'
-import { DropdownMenu, DropdownItem } from 'vant'
+import {
+  Form, Field, Button, Popup, Picker, Calendar, Tabbar, TabbarItem, Card, Sticky, Tag, Popover, DropdownMenu, DropdownItem, Divider, Icon, Uploader, DatetimePicker, Empty, NavBar, SwipeCell, Tab, Tabs, Swipe, SwipeItem, Grid, GridItem, Cell, CellGroup, ContactList, Search, Switch
+} from 'vant'
+import { Image as VanImage } from 'vant'
 
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
-
 Vue.use(Form)
 Vue.use(Field)
 Vue.use(Button)
@@ -17,3 +18,22 @@ Vue.use(Card)
 Vue.use(Sticky)
 Vue.use(Tag)
 Vue.use(Popover)
+Vue.use(Divider)
+Vue.use(Icon)
+Vue.use(Uploader)
+Vue.use(VanImage)
+Vue.use(Empty)
+Vue.use(DatetimePicker)
+Vue.use(NavBar)
+Vue.use(SwipeCell)
+Vue.use(Tab)
+Vue.use(Tabs)
+Vue.use(Swipe)
+Vue.use(SwipeItem)
+Vue.use(Grid)
+Vue.use(GridItem)
+Vue.use(Cell)
+Vue.use(CellGroup)
+Vue.use(ContactList)
+Vue.use(Search)
+Vue.use(Switch)

@@ -1,29 +1,44 @@
 /*
  * @Author: 刘晨曦
  * @Date: 2021-09-06 18:23:51
- * @LastEditTime: 2021-12-10 10:09:36
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-11 19:05:25
+ * @LastEditors: your name
  * @Description: 项目入口文件
- * @FilePath: \express-collection\app.js
+ * @FilePath: \server\src\app.js
  */
+import fs from 'fs';
 import path from 'path'
 import logger from 'morgan'
 import express from 'express'
-import createError from 'http-errors'
 import cookieParser from 'cookie-parser'
-import routers, { PUBLIC_PREFIX } from './router.config' // Router
-// import expressJwt from 'express-jwt'
-// import { SIGN_KEY } from './constant'
+import routers from './config/router.config' // Router
+import expressJwt from 'express-jwt'
 import { TokenUtil } from './utils/index'
+import { JWT_WHITE_LIST } from './config/constant'
 import Response from './controller/response'
+import history from 'connect-history-api-fallback'
 
 const app = express()
 const response = new Response()
 const tokenUtil = new TokenUtil()
+const rootPath = path.resolve(__dirname, '..')
+const publicKey = fs.readFileSync(path.join(rootPath, 'cert/lcxcsy.top.key'))
 
-// parse token
-app.use(function (req, res, next) {
-  console.log(req.headers)
+// history路由中间件
+app.use(history({
+  htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
+  rewrites: [
+    {
+      from: /^\/.*$/,
+      to: () => {
+        return "/";
+      }
+    },
+  ]
+}))
+
+// 解析请求的Token
+app.use((req, res, next) => {
   const token = req.headers['authorization']
   if (token == undefined) {
     return next()
@@ -38,52 +53,49 @@ app.use(function (req, res, next) {
 })
 
 // authentication token
-const whiteList = ['/', '/users/', '/users/login', '/record/add'].map(item => PUBLIC_PREFIX + item)
-
-whiteList.push('/trip/apply')
-
-// app.use(expressJwt({
-//   secret: SIGN_KEY,
-//   algorithms: ['HS256']
-// }).unless({
-//   path: whiteList
-// }))
-
-// view engine setup
-app.set('views', path.join(__dirname, '/views'))
-app.set('view engine', 'jade')
+app.use(expressJwt({
+  secret: publicKey,
+  algorithms: ['HS256']
+}).unless({ path: JWT_WHITE_LIST }))
 
 app.use(logger('dev'))
+// 解析请求参数为 application-json的格式
 app.use(express.json())
+// 解析请求参数为 application/x-www-form-urlencoded的格式
 app.use(express.urlencoded({ extended: true }))
+// 解析Cookie
 app.use(cookieParser())
-app.use('/trip', express.static(path.join(__dirname.replace(RegExp('(src|dist)'), ''), 'public')))
-// app.use('/trip', express.static(__dirname + 'public'))
+// 设置静态资源的路径
+app.use('/great-life', express.static(path.join(rootPath, 'public')))
 
-// register all routers
+// 根路由访问 index.html
+app.get('/', function (req, res) {
+  res.sendFile((path.join(rootPath + '/public/index.html')))
+});
+
+// 注册所有的路由
 routers.forEach(item => {
   app.use(item.prefix, item.router)
 })
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404))
+// 捕获404错误, 需要在路由注册之后
+app.use((req, res) => {
+  res.status(404).json(response.createCustomResponse('-1', 'Not found Error'))
 })
 
-// error handler
-app.use(function (err, req, res) {
+// 其他的错误捕获
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
-  // catch 401 error
+  // 捕获 401 错误
+  console.log(err, 'token');
   if (err.name === 'UnauthorizedError') {
-    res.status(401)
-    res.json(response.createCustomResponse('-1', err.message))
+    res.status(401).json(response.createCustomResponse('-1', err.message))
     return
   }
-  // render the error page
   res.status(err.status || 500)
-  res.render('error')
+  res.status(500).json(response.createCustomResponse('-1', 'Server Internal Error'))
 })
 
 export default app

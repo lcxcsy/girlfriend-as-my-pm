@@ -1,10 +1,10 @@
 <!--
  * @Author: 刘晨曦
  * @Date: 2021-09-09 10:46:48
- * @LastEditTime: 2021-09-09 14:13:34
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-11 18:21:28
+ * @LastEditors: your name
  * @Description: In User Settings Edit
- * @FilePath: \widget-vue2\src\App.vue
+ * @FilePath: \client\src\App.vue
 -->
 <template>
   <div id="app">
@@ -13,7 +13,8 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from '@vue/composition-api'
+export default defineComponent({
   name: 'App'
-}
+})
 </script>

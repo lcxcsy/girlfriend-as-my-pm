@@ -5,32 +5,53 @@
   "scripts": {
     "dev": "nodemon --exec babel-node ./src/bin/www",
     "serve": "babel-node ./src/bin/www",
-    "build": "babel src -d build",
-    "start": "pm2 start ./build/bin/www.js"
+    "build": "babel src -d dist",
+    "start": "pm2 start ./dist/bin/www.js --name great_life"
   },
   "dependencies": {
     "@babel/runtime": "^7.16.3",
     "@babel/runtime-corejs3": "^7.16.3",
+    "connect-history-api-fallback": "^1.6.0",
     "consola": "^2.15.3",
     "cookie-parser": "~1.4.4",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.10.7",
-    "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-jwt": "^6.0.0",
-    "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "~1.9.1",
+    "multer": "^1.4.4",
     "mysql2": "^2.2.5",
+    "node-xlsx": "^0.21.0",
     "sequelize": "^6.5.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.0.0",
+    "@babel/eslint-parser": "^7.17.0",
     "@babel/plugin-transform-runtime": "^7.16.4",
     "@babel/preset-env": "^7.16.4",
+    "eslint": "^8.10.0",
     "nodemon": "^2.0.12"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "extends": [
+      "eslint:recommended"
+    ],
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+      "ecmaVersion": 11,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-unused-vars": 1,
+      "no-undef": 1
+    }
   }
 }

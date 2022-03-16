@@ -1,10 +1,10 @@
 /*
  * @Author: 刘晨曦
  * @Date: 2021-09-09 11:25:38
- * @LastEditTime: 2021-09-10 11:35:11
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-15 14:25:13
+ * @LastEditors: your name
  * @Description: VUE的配置
- * @FilePath: \widget-vue2\vue.config.js
+ * @FilePath: \client\vue.config.js
  */
 const path = require('path')
 
@@ -16,6 +16,7 @@ module.exports = {
       .set('@', path.join(__dirname, 'src'))
       .set('public', path.join(__dirname, 'public'))
   },
+  productionSourceMap: false, // 生产环境下关闭sourceMap
   css: {
     loaderOptions: {
       scss: {
@@ -25,8 +26,9 @@ module.exports = {
   },
   // 用于生产模式下前后端联调
   devServer: {
+    // https: true,
     proxy: {
-      '/trip/api/v1': {
+      '/great-life/api': {
         target: 'http://localhost:3000',
         changeOrigin: true
       }

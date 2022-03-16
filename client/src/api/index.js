@@ -1,61 +1,141 @@
 /*
  * @Author: your name
  * @Date: 2021-09-09 14:58:32
- * @LastEditTime: 2021-09-09 15:21:04
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-15 17:59:06
+ * @LastEditors: your name
  * @Description: In User Settings Edit
- * @FilePath: \widget-vue2\src\api\index.js
+ * @FilePath: \client\src\api\index.js
  */
 import http from '@/api/httpInstance'
 
-function getUserInfo () {
+function userLogin(params) {
+  return http({
+    method: 'post',
+    url: '/great-life/api/users/login',
+    authRequired: false,
+    data: params
+  })
+}
+
+function getCasUserInfo() {
   return http({
     method: 'get',
-    successNotify: true,
-    successMsg: '获取成功',
-    url: 'https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg?_=1630720260336&cv=4747474&ct=24&format=json&inCharset=utf-8&outCharset=utf-8&notice=0&platform=yqq.json&needNewCode=1&uin=0&g_tk_new_20200303=5381&g_tk=5381&hostUin=0'
+    url: '/great-life/api/users/cas',
+    authRequired: true,
+    dontNeedNotify: true
   })
 }
 
-function getAllUsers () {
+function createUser(params) {
+  return http({
+    method: 'post',
+    url: '/great-life/api/users/create',
+    data: params,
+    authRequired: true,
+  })
+}
+
+function deleteUser(id) {
   return http({
     method: 'get',
-    successNotify: false,
-    url: '/trip/api/v1/users/all'
+    url: `/great-life/api/users/delete/${id}`,
+    authRequired: true,
   })
 }
 
-function addTripRecord (params) {
+function updateUserInfo(params) {
   return http({
     method: 'post',
-    successNotify: false,
-    url: '/trip/api/v1/record/create',
+    url: '/great-life/api/users/update',
+    authRequired: true,
     data: params
   })
 }
 
-function queryTripRecord (params) {
+
+function getAllUsers(params) {
+  return http({
+    method: 'get',
+    url: '/great-life/api/users/all',
+    authRequired: true,
+    params: params
+  })
+}
+
+function addTripRecord(params) {
   return http({
     method: 'post',
-    successNotify: false,
-    url: '/trip/api/v1/record/query',
+    url: '/great-life/api/trip/records/create',
+    authRequired: true,
     data: params
   })
 }
 
-function updateTripRecord (params) {
+function queryTripRecord(params) {
   return http({
     method: 'post',
-    successNotify: false,
-    url: '/trip/api/v1/record/update',
+    url: '/great-life/api/trip/records/query',
+    authRequired: true,
     data: params
+  })
+}
+
+function updateTripRecord(params) {
+  return http({
+    method: 'post',
+    url: '/great-life/api/trip/records/update',
+    authRequired: true,
+    data: params
+  })
+}
+
+function uploadImage(params) {
+  return http({
+    method: 'post',
+    url: '/great-life/api/attend/records/upload',
+    authRequired: true,
+    data: params
+  })
+}
+
+function createAttendRecord(params) {
+  return http({
+    method: 'post',
+    url: '/great-life/api/attend/records/create',
+    authRequired: true,
+    data: params
+  })
+}
+
+function queryAttendRecords(params) {
+  return http({
+    method: 'post',
+    url: '/great-life/api/attend/records/query',
+    authRequired: true,
+    data: params
+  })
+}
+
+function deleteAttendRecords(id) {
+  return http({
+    method: 'get',
+    url: `/great-life/api/attend/records/delete/${id}`,
+    authRequired: true,
   })
 }
 
 export {
-  getUserInfo,
+  userLogin,
+  createUser,
+  deleteUser,
+  updateUserInfo,
+  getCasUserInfo,
   getAllUsers,
   addTripRecord,
   queryTripRecord,
-  updateTripRecord
+  updateTripRecord,
+  uploadImage,
+  createAttendRecord,
+  queryAttendRecords,
+  deleteAttendRecords
 }
