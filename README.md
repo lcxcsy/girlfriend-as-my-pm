@@ -1,60 +1,49 @@
-# girlfriend-as-my-pm
+# GirlFriend-As-My-Pm
 
-> What kind of experience is my girlfriend as my project manager.
-
-## Features
-
-1. Apply for business trip
-2. Apply for approval
-
-## Overall
-
-Frontend: Vue3(SFC) + Vant
-
-Backend: Express + Mysql2 + Sequelize
-
-Server（Ali Cloud Server）: Centos + Nginx + PM2
+> What kind of experience is my girlfriend as my project manager? She's in charge of making requests, and I'm in charge of completing them.By the way, the project is a full stack project for people management of small teams, but not necessarily for everyone.
 
 ## QuickStart
 
-```sh
+```bash
+# init sql
+mysql -uroot -p
+
+source init.sql
+
+cd server
+
+# install dependencies
+npm install
+
 npm run dev
 
-npm run build
+# or use pm2
+npm run start
 
-npm start
+# project running address
+http://localhost:3000/great-life/
+https://localhost:11443/great-life/
 ```
 
-## Deploy
+## Overall
 
-`package.json`
+Frontend: Vue2(@components-api) + Vant
 
-```json
-{
-  "dependencies": {
-    "@babel/runtime": "^7.16.3",
-    "@babel/runtime-corejs3": "^7.16.3"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.16.0",
-    "@babel/core": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.16.4",
-    "@babel/preset-env": "^7.16.4"
-  }
-}
-```
+Backend: Express + Mysql2 + Sequelize
 
-`.babelrc`
+Ali Cloud Server: Centos + Nginx + PM2
 
-```json
-{
-  "presets": [["@babel/preset-env", { "targets": { "node": true } }]],
-  "plugins": [
-    [
-      "@babel/plugin-transform-runtime",
-      // 可选 false | 2 | 3
-      { "corejs": 3 }
-    ]
-  ]
-}
-```
+## Features
+
+1. JWT and router guard - [x]
+2. Support http and https -[x]
+3. Travel application - [x]
+4. Travel approval - [x]
+5. Attendance based on real-time location - [x]
+6. Attendance Inquiry - [x]
+7. Personnel management -[x]
+8. Modify avatar and infos - []
+
+## Todo
+
+1. change the front-end codes to vue3-sfc-ts
