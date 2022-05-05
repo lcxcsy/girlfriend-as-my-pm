@@ -41,7 +41,7 @@ export default defineComponent({
     const handleLogout = () => {
       Dialog.confirm({
         title: '确认',
-        message: '是否退出登录'
+        message: '是否退出登录',
       })
         .then(() => {
           actions.removeToken[0]()
@@ -51,7 +51,7 @@ export default defineComponent({
     }
 
     return { currentUser, handleLogout }
-  }
+  },
 })
 </script>
 
@@ -59,14 +59,14 @@ export default defineComponent({
 .detail-wrapper {
   width: 100%;
   height: calc(100vh - 64px);
+  overflow: auto;
   .info-container {
     width: 100%;
     height: 160px;
     text-align: center;
     padding-top: 20px;
-    background-color: #ffffff;
+    background-color: rgba(164, 0, 0, 0.8);
     margin-bottom: 12px;
-    background-image: linear-gradient(180deg, #332175 0, #048181 100%);
     .user-name {
       font-size: 18px;
       margin-top: 4px;

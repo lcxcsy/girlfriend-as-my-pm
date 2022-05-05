@@ -5,7 +5,12 @@
     :class="{ 'map-wrapper': true, 'empty-state': !withinTimeRange }"
   >
     <template v-if="withinTimeRange">
-      <van-field v-model="location" left-icon="location-o" label="当前位置" readonly />
+      <van-field
+        v-model="location"
+        left-icon="location-o"
+        label="当前位置"
+        readonly
+      />
       <div class="map-container">
         <BmMap @ready="handleMapReady" />
       </div>
@@ -59,7 +64,7 @@
     <van-empty
       v-else
       :image="require('@/assets/images/empty-boy.png')"
-      description="侠哥儿提醒您：当前时间不在打卡范围内，请在 09:10 之前及 16:00~24:00 之间进行打卡哟~"
+      description="侠哥儿提醒您：当前时间不在打卡范围内，请在 09:10 之前及 16:30~17:00 之间进行打卡哟~"
     />
   </div>
 </template>
@@ -77,7 +82,10 @@ export default defineComponent({
   components: { BmMap },
   setup(props, { root }) {
     const withinTimeRange = computed(() => {
-      return isDuringDate('00:00:00', '09:10:00') || isDuringDate('16:00:00', '24:00:00')
+      return (
+        isDuringDate('00:00:00', '09:10:00') ||
+        isDuringDate('16:30:00', '17:00:00')
+      )
     })
 
     // 地图相关操作
@@ -103,7 +111,7 @@ export default defineComponent({
     const uploadImage = async (file) => {
       try {
         let formData = new FormData()
-        //此处文件名必须为 pic ，因为后台设置仅接口此文件名
+        // 此处文件名必须为 pic ，因为后台设置仅接口此文件名
         formData.append('pic', file.file)
         const { data } = await api.uploadImage(formData)
         file.status = 'success'
@@ -135,7 +143,7 @@ export default defineComponent({
         userId: currentUser.userId,
         location: mapData.location,
         center: JSON.stringify(mapData.center),
-        message: noteMessage.value
+        message: noteMessage.value,
       }
       try {
         submitLoading.value = true
@@ -160,9 +168,9 @@ export default defineComponent({
       handleDeleteImage,
       handleSubmit,
       submitLoading,
-      isSuccess
+      isSuccess,
     }
-  }
+  },
 })
 </script>
 

@@ -5,18 +5,18 @@ const Op = Sequelize.Op
 
 export default class RecordsController {
 
-  async create(params) {
+  async create (params) {
     params.status = 1 // 默认未审批
     return await RecordsModel.create(params)
   }
 
-  async delete(recordId) {
+  async delete (recordId) {
     return await RecordsModel.destroy({
       where: { recordId: recordId }
     })
   }
 
-  async update(params) {
+  async update (params) {
     const { recordId } = params
     delete params.recordId
     return await RecordsModel.update(params, {
@@ -24,7 +24,7 @@ export default class RecordsController {
     })
   }
 
-  async query(params) {
+  async query (params) {
     const { userId, status } = params
     const queryParams = userId
       ? { userId: userId, status: status }
@@ -35,7 +35,7 @@ export default class RecordsController {
     })
   }
 
-  async export({ startTime, endTime }) {
+  async export ({ startTime, endTime }) {
     const data = await RecordsModel.findAll({
       where: {
         [Op.and]: [{
@@ -52,7 +52,7 @@ export default class RecordsController {
         item.statusName = item.status === 3 ? '审批完成' : item.status === 2 ? '已拒绝' : '未审批'
         let arr = []
         for (const key in item) {
-          const includeKey = !['recordId', 'greatLifeKey', 'status'].includes(key)
+          const includeKey = !['recordId', 'userId', 'status', 'createdAt', 'updatedAt'].includes(key)
           includeKey && arr.push(item[key])
         }
         return arr

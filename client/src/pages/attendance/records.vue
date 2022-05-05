@@ -31,8 +31,12 @@
           @click-thumb="ImagePreview([item.faceUrlFull])"
         >
           <template #tags>
-            <div class="van-card__desc van-ellipsis">打卡地点：{{ item.location }}</div>
-            <div class="van-card__desc van-ellipsis">打卡时间：{{ item.createdTime }}</div>
+            <div class="van-card__desc van-ellipsis">
+              打卡地点：{{ item.location }}
+            </div>
+            <div class="van-card__desc van-ellipsis">
+              打卡时间：{{ item.createdAt }}
+            </div>
           </template>
         </van-card>
         <template #right>
@@ -62,7 +66,10 @@ export default defineComponent({
     const minData = new Date(2020, 0, 1)
     const maxData = new Date(2026, 12, 31)
     const recordsList = ref([])
-    const baseUrl = process.env.NODE_ENV === 'production' ? window.origin : 'http://localhost:3000'
+    const baseUrl =
+      process.env.NODE_ENV === 'production'
+        ? window.origin
+        : 'http://localhost:3000'
     const currentUser = root.$store.getters.userInfo
 
     const formatterDate = (type, val) => {
@@ -84,12 +91,26 @@ export default defineComponent({
     const queryAttendRecords = async () => {
       try {
         const { userId, userType } = currentUser
-        const startTime = customFormatTime(currentDate.value, 'custom', '00:00:00')
-        const endTime = customFormatTime(currentDate.value, 'custom', '23:59:59')
-        const { data } = await api.queryAttendRecords({ startTime, endTime, userId, userType })
+        const startTime = customFormatTime(
+          currentDate.value,
+          'custom',
+          '00:00:00'
+        )
+        const endTime = customFormatTime(
+          currentDate.value,
+          'custom',
+          '23:59:59'
+        )
+        const { data } = await api.queryAttendRecords({
+          startTime,
+          endTime,
+          userId,
+          userType,
+        })
         recordsList.value = data
           ? data.map((item) => {
               item.faceUrlFull = baseUrl + item.faceUrl
+              item.createdAt = customFormatTime(item.createdAt)
               return item
             })
           : []
@@ -103,7 +124,7 @@ export default defineComponent({
     const confirmDeleteRecord = (recordId) => {
       Dialog.confirm({
         title: '删除确认',
-        message: '是否删除该条考勤记录？'
+        message: '是否删除该条考勤记录？',
       }).then(() => {
         handleDeleteRecord(recordId)
       })
@@ -132,9 +153,9 @@ export default defineComponent({
       recordsList,
       queryAttendRecords,
       confirmDeleteRecord,
-      handleDeleteRecord
+      handleDeleteRecord,
     }
-  }
+  },
 })
 </script>
 

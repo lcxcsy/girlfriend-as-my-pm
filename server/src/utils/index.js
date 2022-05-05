@@ -24,9 +24,9 @@ export class TokenUtil {
    * @param {*} userId
    * @return {*}
    */
-  sign(userInfo) {
+  sign (userInfo) {
     return new Promise((resolve) => {
-      const token = jsonwebtoken.sign({ ...userInfo }, publicKey, { expiresIn: '1d' })
+      const token = jsonwebtoken.sign({ ...userInfo }, publicKey, { expiresIn: '365 days', maxAge: '365 days' })
       resolve(`Bearer ${token}`)
     })
   }
@@ -36,7 +36,7 @@ export class TokenUtil {
    * @param {*} token
    * @return {*}
    */
-  verify(token) {
+  verify (token) {
     return new Promise((resolve) => {
       const info = jsonwebtoken.verify(token.split(' ')[1], publicKey)
       resolve(info)
@@ -51,7 +51,7 @@ export class AesCrypto {
  * @param {*} password
  * @return {*} 加密后的密文
  */
-  encrypt(name = '', password = '') {
+  encrypt (name = '', password = '') {
     try {
       const hash = CryptoJS.MD5(name).toString().substring(0, 16) // 产生秘钥
       const key = CryptoJS.enc.Utf8.parse(hash)
@@ -72,7 +72,7 @@ export class AesCrypto {
  * @param {*} password
  * @return {*} 解密后的明文
  */
-  decrypt(name, password) {
+  decrypt (name, password) {
     try {
       const hash = CryptoJS.MD5(name).toString().substring(0, 16) // 产生秘钥
       const key = CryptoJS.enc.Utf8.parse(hash)

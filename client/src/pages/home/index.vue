@@ -11,28 +11,39 @@
     <template v-if="activeBar === 0">
       <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
         <van-swipe-item>
-          <img style="width:100%" v-lazy="require('@/assets/images/ads-oa.png')" />
+          <img v-lazy="require('@/assets/images/ads-oa.png')" />
         </van-swipe-item>
-        <!-- <van-swipe-item>广告招租位</van-swipe-item>
-        <van-swipe-item>广告招租位</van-swipe-item>
-        <van-swipe-item>广告招租位</van-swipe-item> -->
+        <van-swipe-item @click="handleClickItem">
+          <img v-lazy="require('@/assets/images/ads-2.jpg')" />
+        </van-swipe-item>
       </van-swipe>
-      <div class="menu-title">我的应用</div>
+      <div class="menu-title">综合行政</div>
       <van-grid :gutter="10" :column-num="3">
         <van-grid-item
           v-for="(item, index) in currentMenu"
           :key="index"
-          :icon="require(`@/assets/images/${item.menuIcon}.png`)"
+          :icon="require(`@/assets/images/icon-${item.menuIcon}.png`)"
           :text="item.menuName"
           :to="item.router"
         />
       </van-grid>
-      <div class="menu-title">计划书</div>
+      <div class="menu-title">经营工具</div>
       <van-grid :gutter="10" :column-num="3">
+        <van-grid-item
+          v-for="(item, index) in DAILY_WORKS"
+          :key="index"
+          :icon="require(`@/assets/images/icon-${item.menuIcon}.png`)"
+          :text="item.workName"
+          :url="item.routerMode ? '' : item.router"
+          :to="item.routerMode ? item.router : ''"
+        />
+      </van-grid>
+      <div class="menu-title">计划书</div>
+      <van-grid :gutter="10" :column-num="3" icon-size="64px">
         <van-grid-item
           v-for="(item, index) in PLAN_BOOKS"
           :key="index"
-          icon="photo-o"
+          :icon="require(`@/assets/images/icon-${item.menuIcon}.png`)"
           :text="item.planName"
           :url="item.router"
         />
@@ -50,13 +61,19 @@
 import { Dialog } from 'vant'
 import AboutMe from './aboutMe.vue'
 import { useUsers } from '@/hooks/useUsers'
-import { MENU_PERMISSIONS, PLAN_BOOKS } from '@/config/constant'
+import {
+  MENU_PERMISSIONS,
+  BUSINESS_DATA,
+  PLAN_BOOKS,
+  DAILY_WORKS,
+} from '@/config/constant'
 import { defineComponent, ref, computed } from '@vue/composition-api'
 export default defineComponent({
   name: 'HomePage',
   components: { AboutMe },
   setup(props, { root }) {
     const activeBar = ref(0)
+    const router = root._router
     const actions = root.$store._actions
     const { getCasUserInfo } = useUsers()
 
@@ -87,30 +104,46 @@ export default defineComponent({
           .catch(() => {})
       })
 
-    return { PLAN_BOOKS, currentMenu, activeBar, currentUser }
-  }
+    const handleClickItem = () => {
+      window.open(BUSINESS_DATA)
+    }
+
+    return {
+      PLAN_BOOKS,
+      DAILY_WORKS,
+      BUSINESS_DATA,
+      currentMenu,
+      activeBar,
+      currentUser,
+      handleClickItem,
+    }
+  },
 })
 </script>
 
 <style lang="scss" scoped>
 .page-wrapper {
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 64px);
+  overflow: auto;
   background-color: $main-bg-color;
   .my-swipe .van-swipe-item {
-    height: 150px;
-    color: #fff;
-    font-size: 20px;
-    line-height: 160px;
-    text-align: center;
-    margin-bottom: 10px;
-    background-color: #39a9ed;
+    height: 180px;
+    background-color: #fffff;
+    & img {
+      width: 100%;
+      height: 100%;
+    }
   }
   .menu-title {
     color: #26282a;
     font-weight: 700;
     font-size: 14px;
-    margin: 8px 12px;
+    padding: 8px 12px;
+  }
+  &:last-child {
+    box-sizing: border-box;
+    padding-bottom: 16px;
   }
 }
 </style>

@@ -4,13 +4,13 @@ import '@/plugin/vant'
 import 'vant/lib/index.css'
 import router from '@/router'
 import store from '@/store'
-import { Lazyload } from 'vant';
+import { Lazyload } from 'vant'
 import VueCompositionAPI from '@vue/composition-api'
 
 Vue.config.productionTip = false
-Vue.use(Lazyload);
+Vue.use(Lazyload)
 Vue.use(VueCompositionAPI)
-//设置游览器标题
+// 设置游览器标题
 Vue.directive('title', {
   inserted: function (el) {
     document.title = el.dataset.title

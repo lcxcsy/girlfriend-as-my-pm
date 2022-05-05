@@ -1,6 +1,8 @@
 <template>
   <div v-title data-title="渠道经理出差审批系统" class="page-wrapper">
-    <div :class="{ 'records-content': true, 'empty-state': !recordsList.length }">
+    <div
+      :class="{ 'records-content': true, 'empty-state': !recordsList.length }"
+    >
       <van-divider v-if="!!recordsList.length" content-position="left">{{
         currentStatus === 0
           ? `您有${recordsList.length}条消息待审批`
@@ -14,8 +16,12 @@
           :desc="`出差时间：${getDateDuration(item.startTime, item.endTime)}`"
         >
           <template #tags>
-            <div class="van-card__desc van-ellipsis">出差地点：{{ item.areaName }}</div>
-            <div class="van-card__desc van-ellipsis">出差事由：{{ item.reason }}</div>
+            <div class="van-card__desc van-ellipsis">
+              出差地点：{{ item.areaName }}
+            </div>
+            <div class="van-card__desc van-ellipsis">
+              出差事由：{{ item.reason }}
+            </div>
             <van-tag
               v-if="[2, 3].includes(item.status)"
               :type="item.status === 3 ? 'success' : 'danger'"
@@ -49,7 +55,10 @@
       />
     </div>
     <van-tabbar v-model="currentStatus" @change="getRecords">
-      <van-tabbar-item v-if="currentStatus === 0 && !!recordsList.length" icon="records" dot
+      <van-tabbar-item
+        v-if="currentStatus === 0 && !!recordsList.length"
+        icon="records"
+        dot
         >未审批</van-tabbar-item
       >
       <van-tabbar-item v-else icon="records">未审批</van-tabbar-item>
@@ -67,12 +76,13 @@ export default defineComponent({
   name: 'BusinessTripApproval',
   setup() {
     const currentStatus = ref(0)
-    const { recordsList, getTripRecords, getDateDuration, handleApplyForm } = useTrip()
+    const { recordsList, getTripRecords, getDateDuration, handleApplyForm } =
+      useTrip()
 
     // 获取申请预约记录
     const getRecords = () => {
       getTripRecords({
-        status: currentStatus.value ? [2, 3] : [1]
+        status: currentStatus.value ? [2, 3] : [1],
       })
     }
 
@@ -81,15 +91,23 @@ export default defineComponent({
     // 处理预约单
     const handleDealApplication = (status, recordId, userName) => {
       Dialog.confirm({
-        message: `是否${status == 3 ? '通过' : '驳回'} ${userName} 的出差申请？`
+        message: `是否${
+          status == 3 ? '通过' : '驳回'
+        } ${userName} 的出差申请？`,
       }).then(async () => {
         await handleApplyForm({ status, recordId })
         getRecords()
       })
     }
 
-    return { currentStatus, recordsList, getDateDuration, getRecords, handleDealApplication }
-  }
+    return {
+      currentStatus,
+      recordsList,
+      getDateDuration,
+      getRecords,
+      handleDealApplication,
+    }
+  },
 })
 </script>
 

@@ -38,7 +38,6 @@ router.post('/create', async (req, res) => {
     const params = {
       ...req.body, password: aesCrypto.encrypt(req.body.userId, 'ccrs123456')
     }
-    console.log(params, 'params');
     await usersController.create(params)
     return res.json(response.createSuccessResponse('用户创建成功'))
   } catch (err) {

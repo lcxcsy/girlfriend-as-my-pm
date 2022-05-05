@@ -9,7 +9,7 @@ import CryptoJS from 'crypto-js'
  */
 export const customFormatTime = (date, type, format) => {
   if (!date) {
-    return dayjs().format('YYYY/MM/DD hh:mm:ss')
+    return dayjs().format('YYYY/MM/DD HH:mm:ss')
   } else {
     switch (type) {
       case 'day':
@@ -17,7 +17,7 @@ export const customFormatTime = (date, type, format) => {
       case 'custom':
         return dayjs(date).format('YYYY/MM/DD ' + format)
       default:
-        return dayjs(date).format('YYYY/MM/DD hh:mm:ss')
+        return dayjs(date).format('YYYY/MM/DD HH:mm:ss')
     }
   }
 }

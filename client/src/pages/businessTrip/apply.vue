@@ -5,7 +5,10 @@
     :class="{ 'page-wrapper': true, 'page-top': activeBar == 0 }"
   >
     <template v-if="activeBar === 0">
-      <ApplicationForm ref="applyFormRef" :userInfo="currentUser" />
+      <ApplicationForm
+        ref="applyFormRef"
+        :userInfo="currentUser"
+      />
     </template>
     <template v-else>
       <TripRecords :userInfo="currentUser" />
@@ -25,7 +28,7 @@ import { defineComponent, ref } from '@vue/composition-api'
 export default defineComponent({
   name: 'BusinessTripApply',
   components: { TripRecords, ApplicationForm },
-  setup(props, { root }) {
+  setup (props, { root }) {
     const activeBar = ref(0)
     const currentUser = root.$store.getters.userInfo
 

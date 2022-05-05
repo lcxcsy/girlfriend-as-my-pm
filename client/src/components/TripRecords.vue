@@ -1,7 +1,11 @@
 <template>
   <div>
-    <van-dropdown-menu style="margin: 0 -12px">
-      <van-dropdown-item v-model="currentStatus" :options="STATUS_OPTION" @change="getRecords" />
+    <van-dropdown-menu>
+      <van-dropdown-item
+        v-model="currentStatus"
+        :options="STATUS_OPTION"
+        @change="getRecords"
+      />
     </van-dropdown-menu>
     <div class="record-wrapper">
       <van-card
@@ -11,10 +15,20 @@
         :desc="`出差时间：${getDateDuration(item.startTime, item.endTime)}`"
       >
         <template #tags>
-          <div class="van-card__desc van-ellipsis">出差地点：{{ item.areaName }}</div>
-          <div class="van-card__desc van-ellipsis">申请事由：{{ item.reason }}</div>
+          <div class="van-card__desc van-ellipsis">
+            出差地点：{{ item.areaName }}
+          </div>
+          <div class="van-card__desc van-ellipsis">
+            申请事由：{{ item.reason }}
+          </div>
           <van-tag
-            :type="item.status === 3 ? 'success' : item.status === 2 ? 'danger' : 'warning'"
+            :type="
+              item.status === 3
+                ? 'success'
+                : item.status === 2
+                ? 'danger'
+                : 'warning'
+            "
             style="position: absolute; right: 0; top: 0"
           >
             {{ APPROVAL_STATUS[item.status] }}
@@ -38,8 +52,8 @@ export default defineComponent({
       default: () => {
         return {}
       },
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props) {
     const currentStatus = ref('1;2;3')
@@ -50,7 +64,7 @@ export default defineComponent({
       props.userInfo.userId &&
         getTripRecords({
           userId: props.userInfo.userId,
-          status: currentStatus.value.split(';').map((item) => Number(item))
+          status: currentStatus.value.split(';').map((item) => Number(item)),
         })
     }
 
@@ -62,9 +76,9 @@ export default defineComponent({
       currentStatus,
       recordsList,
       getDateDuration,
-      getRecords
+      getRecords,
     }
-  }
+  },
 })
 </script>
 

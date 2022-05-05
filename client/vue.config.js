@@ -29,7 +29,7 @@ module.exports = {
     // https: true,
     proxy: {
       '/great-life/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3001',
         changeOrigin: true
       }
     }

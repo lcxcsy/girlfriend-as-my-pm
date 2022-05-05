@@ -36,10 +36,10 @@ router.beforeEach(async (to, from, next) => {
       next()
     } else {
       Dialog.alert({
-        message: '暂未登录，即将跳转至登录页面...',
+        message: '暂未登录，即将跳转至登录页面...'
       }).then(() => {
         window.location.replace('/great-life/login')
-      });
+      })
     }
   } else {
     next()

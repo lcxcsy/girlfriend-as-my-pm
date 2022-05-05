@@ -62,5 +62,12 @@ export default [
     meta: {
       requireAuth: true
     }
+  }, {
+    name: 'ActivatedFiles',
+    path: '/activated-files',
+    component: 'home/activatedFiles',
+    meta: {
+      requireAuth: true
+    }
   }
 ]
