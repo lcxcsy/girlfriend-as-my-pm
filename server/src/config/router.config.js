@@ -1,9 +1,15 @@
 import usersRouter from '../routes/users'
-import recordRouter from '../routes/tripRecords'
-import attendRecordRouter from '../routes/attendRecords'
+import commonRouter from '../routes/common'
+import recordRouter from '../routes/bushinessTrip'
+import attendRecordRouter from '../routes/attendance'
 import { PUBLIC_PREFIX } from '../config/constant'
 
 export default [
+  // 通用接口
+  {
+    prefix: PUBLIC_PREFIX + '/common',
+    router: commonRouter
+  },
   {
     prefix: PUBLIC_PREFIX + '/users',
     router: usersRouter

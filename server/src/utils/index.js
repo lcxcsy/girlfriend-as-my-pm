@@ -7,8 +7,9 @@
  * @FilePath: \server\src\utils\index.js
  */
 import fs from 'fs'
-import dayjs from 'dayjs'
 import path from 'path'
+import xlsx from 'node-xlsx'
+import dayjs from 'dayjs'
 import multer from 'multer'
 import mkdirp from 'mkdirp'
 import CryptoJS from 'crypto-js'
@@ -26,7 +27,7 @@ export class TokenUtil {
    */
   sign (userInfo) {
     return new Promise((resolve) => {
-      const token = jsonwebtoken.sign({ ...userInfo }, publicKey, { expiresIn: '365 days', maxAge: '365 days' })
+      const token = jsonwebtoken.sign({ ...userInfo }, publicKey, { expiresIn: '365 days' })
       resolve(`Bearer ${token}`)
     })
   }
@@ -117,4 +118,54 @@ export const uploadImage = () => {
     }
   })
   return multer({ storage })
+}
+
+// 通用的上传函数
+export const commonUpload = (bizType, timeFlag = false) => {
+  // 指定上传后保存到哪一个文件夹中
+  const currentDay = dayjs().format('YYYYMMDD')
+  const filePath = timeFlag ? `./public/images/${bizType}/${currentDay}` : `./public/images/${bizType}`
+
+  const storage = multer.diskStorage({
+    destination: async () => {
+      // 创建存储图片的目录
+      fs.access(filePath, async (err) => {
+        // 如果不存在的话
+        if (err) await mkdirp(filePath)
+      })
+    },
+    // 给保存的文件命名，需要返回全称，包括后缀
+    filename: (req, file, callback) => {
+      const originalName = file.originalname
+      const extname = path.extname(originalName); // 获取后缀名
+      const fileName = path.parse(originalName).name // 获取上传的文件名
+      callback(null, `${fileName}-${Date.now()}${extname}`)//加上时间，防止文件重名
+    }
+  })
+  return multer({ storage })
+}
+
+
+// 通用导出的接口
+export const commonExport = (data, fileName, cb) => {
+  let formatData = data
+    .map(record => record.dataValues)
+    .map(item => {
+      if (item['createdAt']) {
+        item['createdAt'] = dayjs(item['createdAt']).format('YYYY-MM-DD HH:mm:ss')
+      }
+      return item
+    })
+
+  formatData = cb ? cb(formatData) : formatData.map(item => Object.values(item))
+
+  const sheetOptions = {
+    '!cols': Array(formatData[0].length).fill({ wch: 25 })
+  }
+
+  const buffer = xlsx.build([{ name: 'sheet1', data: formatData }], { sheetOptions });
+  const file = `${fileName}.xlsx`
+  fs.writeFileSync(file, buffer, { 'flag': 'w' });
+
+  return file
 }

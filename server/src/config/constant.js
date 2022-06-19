@@ -10,6 +10,7 @@ export const JWT_WHITE_LIST = [
   `/${APP_CONTENT}/favicon.ico`,
   `/${APP_CONTENT}/api/users/login`,
   `/${APP_CONTENT}/api/trip/records/export`,
+  `/${APP_CONTENT}/api/attend/records/export`,
   { url: /^\/great-life\/attend_images\/.*/, methods: ['GET'] },
   { url: /^\/great-life\/static\/.*/, methods: ['GET'] }
 ]

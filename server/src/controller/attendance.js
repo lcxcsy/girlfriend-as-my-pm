@@ -5,17 +5,17 @@ const Op = Sequelize.Op
 
 export default class AttendRecordsController {
 
-  async create(params) {
+  async create (params) {
     return await AttendRecordsModel.create(params)
   }
 
-  async delete(key) {
+  async delete (key) {
     return await AttendRecordsModel.destroy({
       where: { recordId: key }
     })
   }
 
-  async update(params) {
+  async update (params) {
     const { recordId } = params
     delete params.recordId
     return await AttendRecordsModel.update(...params, {
@@ -23,7 +23,7 @@ export default class AttendRecordsController {
     })
   }
 
-  async query(params) {
+  async query (params) {
     const { startTime, endTime, userId, userType } = params
     let queryParams = {
       [Op.and]: [{

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import express from 'express'
-import { uploadImage } from "../utils/index"
-import AttendRecordsController from '../controller/attendRecords'
+import { uploadImage, commonExport } from "../utils/index"
+import AttendRecordsController from '../controller/attendance'
 import Response from '../controller/response'
 
 const router = express.Router()
@@ -22,7 +22,7 @@ router.post('/records/upload', uploadImage().single('pic'), async (req, res) => 
   }
 })
 
-router.post('/records/create', uploadImage().single('pic'), async (req, res) => {
+router.post('/records/create', async (req, res) => {
   try {
     await attendRecordsController.create(req.body)
     return res.json(response.createSuccessResponse('打卡成功！'))
@@ -45,5 +45,28 @@ router.get('/records/delete/:id', async (req, res) => {
     return res.json(response.createCustomResponse('-1', err))
   }
 })
+
+router.get('/records/export', async (req, res) => {
+  const data = await attendRecordsController.query(req.query)
+
+  const file = commonExport(data, '考勤记录', (data) => {
+    const formatData = data.map(item => {
+      let arr = []
+      for (const key in item) {
+        const includeKey = ['userName', 'location', 'message', 'createdAt'].includes(key)
+        includeKey && arr.push(item[key])
+      }
+
+      return arr
+    });
+
+    formatData.unshift(['渠道经理', '打卡地点', '备注信息', '打卡时间'])
+
+    return formatData
+  })
+
+  res.download(file);
+})
+
 
 export default router

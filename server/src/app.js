@@ -29,9 +29,13 @@ app.use(history({
   htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
   rewrites: [
     {
-      from: /^\/.*$/,
-      to: () => {
-        return "/";
+      from: /^\/.*$/, to: (context) => {
+        const { pathname } = context.parsedUrl
+        if (/\/api\//.test(pathname)) {
+          return pathname
+        } else {
+          return "/";
+        }
       }
     },
   ]
@@ -89,7 +93,6 @@ app.use((err, req, res, next) => {
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
   // 捕获 401 错误
-  console.log(err, 'token');
   if (err.name === 'UnauthorizedError') {
     res.status(401).json(response.createCustomResponse('-1', err.message))
     return
